@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-green-500: #00ff00;
+  --color-green-400: #4ade80;
+}
+
+:root {
+  background-color: #000;
+  color: #0f0;
+}
+
+/* Custom scrollbar for that terminal feel */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(0, 255, 0, 0.05);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 0, 0.2);
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 0, 0.4);
+}
+
+/* Glitch animation */
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.animate-glitch {
+  animation: glitch 0.2s cubic-bezier(.25,.46,.45,.94) both infinite;
+}

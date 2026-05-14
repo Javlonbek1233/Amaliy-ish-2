@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "GhostNet operative profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "username": { "type": "string" },
+        "xp": { "type": "integer" },
+        "level": { "type": "integer" },
+        "reputation": { "type": "integer" },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "missionsCompleted": { "type": "integer" },
+            "serversHacked": { "type": "integer" },
+            "defensesBreached": { "type": "integer" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "username", "xp", "level"]
+    },
+    "Mission": {
+      "title": "Mission",
+      "description": "Hacking mission data",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "target": { "type": "string" },
+        "complexity": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "reward": { "type": "integer" },
+        "type": { "type": "string", "enum": ["SOLO", "MULTIPLAYER"] },
+        "status": { "type": "string", "enum": ["AVAILABLE", "ACTIVE", "COMPLETED"] }
+      }
+    },
+    "LeaderboardEntry": {
+      "title": "Leaderboard Entry",
+      "description": "Ranked hacker entry",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "score": { "type": "integer" },
+        "rank": { "type": "integer" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and stats"
+    },
+    "/missions/{missionId}": {
+      "schema": "Mission",
+      "description": "Available hacking missions"
+    },
+    "/leaderboard/{userId}": {
+      "schema": "LeaderboardEntry",
+      "description": "Global rankings"
+    }
+  }
+}

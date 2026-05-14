@@ -1,0 +1,8 @@
+{
+  "name": "GhostNet",
+  "description": "A cinematic hacker simulation with AI-generated scenarios and multiplayer missions.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": []
+}

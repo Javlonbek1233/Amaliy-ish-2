@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'username', 'xp', 'level'])
+        && data.uid == request.auth.uid
+        && data.username is string && data.username.size() <= 32
+        && data.xp is int
+        && data.level is int;
+    }
+
+    // Collection: Users
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) 
+        && isValidUser(request.resource.data)
+        && request.resource.data.uid == resource.data.uid;
+    }
+
+    // Collection: Missions
+    match /missions/{missionId} {
+      allow read: if isSignedIn();
+      allow write: if false; // System only
+    }
+
+    // Collection: Leaderboard
+    match /leaderboard/{userId} {
+      allow read: if isSignedIn();
+      allow write: if false; // System or Cloud Functions only (or strictly validated user write for score)
+    }
+  }
+}
